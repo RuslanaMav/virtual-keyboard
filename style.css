@@ -41,4 +41,23 @@ p {
   margin: auto;
   margin-top: 10px;
 }
+
+.button, 
+.buttonservice {
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #c7c7c7;
+  padding: 0;
+}
+
+.Backspace, 
+.Enter{
+    width: auto;
+    padding: 0px 5px;
+  }
   
+.Enter {
+    height: 80px;
+}

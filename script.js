@@ -39,7 +39,7 @@ const nameKey = {
     3: ["IntlBackslash", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash"]
 }
 
-
+//main 
 for (let i = 0; i < 4; i++) {
     let keyRow = document.createElement("div");
     keyRow.className = "key-row";
@@ -53,12 +53,51 @@ for (let i = 0; i < 4; i++) {
     }
 }
 
+const k = document.getElementsByClassName("key-row");
+
+//Backspace 
+let backKey = createKey("Backspace", "buttonservice Backspace");
+k[0].appendChild(backKey);
+backKey.addEventListener('click', () => {
+    let s = textArea.value;
+    let position = getPosInRow(textArea);
+    if (position !== 0) textArea.value = s.slice(0, position - 1) + s.slice(position);
+})
+
+//Tab
+let tabKey = createKey("Tab", "buttonservice Tab");
+k[1].prepend(tabKey);
+tabKey.addEventListener('click', () => {
+    textArea.focus();
+    let s = textArea.value;
+    let position = getPosInRow(textArea);
+    if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += "    ";
+    else textArea.value = s.slice(0, position) + "    " + s.slice(position);
+});
+
+//Enter
+let enterKey = createKey("Enter", "buttonservice Enter");
+k[1].appendChild(enterKey);
+k[2].style.marginRight = "10%";
+enterKey.addEventListener('click', () => {
+    textArea.focus();
+    let s = textArea.value;
+    let position = getPosInRow(textArea);
+    if (getPosInRow(textArea) === s.length) textArea.value += "\n";
+    else if (getPosInRow(textArea) === 0) textArea.value = "\n" + s;
+    else textArea.value = s.slice(0, position) + "\n" + s.slice(position);
+});
+
+
+
+
 function createKey(value, cl) {
     let key = document.createElement("button");
     key.innerHTML = value;
     key.className = cl;
     return key;
 }
+
 
 function createActive(obj) {
     obj.addEventListener('click', () => {
@@ -73,7 +112,6 @@ function createActive(obj) {
 function getCaret(el) {
     if (el.selectionStart) return el.selectionStart;
     else if (document.selection) {
-        el.focus();
         let r = document.selection.createRange();
         if (r == null) return 0;
         let re = el.createTextRange(),
@@ -89,3 +127,5 @@ function getPosInRow(el) {
     let text = el.value.substr(0, getCaret(el));
     return text.length;
 }
+
+
