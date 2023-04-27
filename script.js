@@ -88,6 +88,16 @@ enterKey.addEventListener('click', () => {
     else textArea.value = s.slice(0, position) + "\n" + s.slice(position);
 });
 
+//CapsLock
+let count = false;
+let capsKey = createKey("CapsLock", "buttonservice CapsLock");
+k[2].prepend(capsKey);
+capsKey.addEventListener('click', () => {
+    textArea.focus();
+    document.querySelector(".CapsLock").classList.toggle("active");
+    changeCase();
+});
+
 
 
 
@@ -129,3 +139,16 @@ function getPosInRow(el) {
 }
 
 
+function changeCase() {
+    let button = document.getElementsByClassName("button");
+    if (!count) {
+        count = true;
+        for (let i of button)
+            i.innerHTML = i.innerText.toUpperCase();
+    }
+    else {
+        count = false;
+        for (let i of button)
+            i.innerHTML = i.innerText.toLowerCase();
+    }
+}
