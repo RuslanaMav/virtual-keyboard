@@ -59,11 +59,18 @@ p {
 }
 
 .Backspace, 
-.Enter{
+.Enter, 
+.CapsLock, 
+.ShiftLeft, 
+.ControlLeft, 
+.AltLeft, 
+.AltRight, 
+.ShiftRight {
   width: auto;
   padding: 0px 5px;
 }
   
 .Enter {
-  height: 80px;
+  height: 75px;
 }
+
