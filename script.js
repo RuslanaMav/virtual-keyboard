@@ -1,4 +1,4 @@
-let language = true;
+let language = false;
 
 let divMain = document.createElement("div");
 divMain.className = "content";
@@ -62,6 +62,8 @@ backKey.addEventListener('click', () => {
     let s = textArea.value;
     let position = getPosInRow(textArea);
     if (position !== 0) textArea.value = s.slice(0, position - 1) + s.slice(position);
+    textArea.setSelectionRange(position-1,position-1);
+    textArea.focus();
 })
 
 //Tab
@@ -73,6 +75,7 @@ tabKey.addEventListener('click', () => {
     let position = getPosInRow(textArea);
     if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += "    ";
     else textArea.value = s.slice(0, position) + "    " + s.slice(position);
+    textArea.setSelectionRange(position+4,position+4);
 });
 
 //Enter
@@ -86,6 +89,8 @@ enterKey.addEventListener('click', () => {
     if (getPosInRow(textArea) === s.length) textArea.value += "\n";
     else if (getPosInRow(textArea) === 0) textArea.value = "\n" + s;
     else textArea.value = s.slice(0, position) + "\n" + s.slice(position);
+    textArea.setSelectionRange(position+1,position+1);
+
 });
 
 //CapsLock
@@ -99,6 +104,65 @@ capsKey.addEventListener('click', () => {
 });
 
 
+//Shift 
+const shiftAdditEng = {
+    1: ["±", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+"],
+    2: ["&sect;", 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "-", "="]
+}
+
+const shiftAdditRu = {
+    1: ["<", "!", "&#34;", "№", "%", ":", ",", ".", ";", "(", ")", "_", "+"],
+    2: [">", 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "-", "="]
+}
+
+const shiftAdditBack = {
+    1: ["[", "]", ";", "'", "&#92;", ",", ".", "`"],
+    2: ["{", "}", ":", "&#34;", "|", "<", ">", "~"],
+    3: [".BracketLeft", ".BracketRight", ".Semicolon", ".Quote", ".Backslash", ".Comma", ".Period", ".IntlBackslash"]
+}
+
+const r = k[0].querySelectorAll(".button");
+
+let shiftKey = createKey("Shift", "buttonservice ShiftLeft");
+k[3].prepend(shiftKey);
+
+let upKey = createKey("&#9650;", "buttonservice ArrowUp");
+k[3].appendChild(upKey);
+createActive(upKey);
+
+let shift1Key = createKey("Shift", "buttonservice ShiftRight");
+k[3].appendChild(shift1Key);
+
+let shiftCount = false;
+shiftKey.addEventListener('click', () => {
+    textArea.focus();
+    if (!shiftCount) {
+        shiftKey.classList.add("active");
+        shiftCount = true;
+        shiftChange(shiftKey);
+    }
+    else {
+        shiftKey.classList.remove("active");
+        shiftCount = false;
+        shiftChangeBack();
+    }
+})
+
+shift1Key.addEventListener('click', () => {
+    textArea.focus();
+    if (!shiftCount) {
+        shift1Key.classList.add("active");
+        shiftCount = true;
+        shiftChange(shift1Key);
+    }
+    else {
+        shift1Key.classList.remove("active");
+        shiftCount = false;
+        shiftChangeBack();
+    }
+})
+
+
 
 
 function createKey(value, cl) {
@@ -108,7 +172,6 @@ function createKey(value, cl) {
     return key;
 }
 
-
 function createActive(obj) {
     obj.addEventListener('click', () => {
         let s = textArea.value;
@@ -116,6 +179,7 @@ function createActive(obj) {
         if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += obj.innerText;
         else textArea.value = s.slice(0, position) + obj.innerText + s.slice(position);
         textArea.focus();
+        textArea.setSelectionRange(position+1,position+1);
     });
 }
 
@@ -138,7 +202,6 @@ function getPosInRow(el) {
     return text.length;
 }
 
-
 function changeCase() {
     let button = document.getElementsByClassName("button");
     if (!count) {
@@ -150,5 +213,40 @@ function changeCase() {
         count = false;
         for (let i of button)
             i.innerHTML = i.innerText.toLowerCase();
+    }
+}
+
+function shiftChangeBack() {
+    changeCase();
+    for (let i = 0; i < r.length; i++)
+        if (!language) r[i].innerHTML = shiftAdditEng[2][i];
+        else r[i].innerHTML = shiftAdditRu[2][i];
+    if (!language)
+        for (let i = 0; i < shiftAdditBack[1].length; i++)
+            document.querySelector(shiftAdditBack[3][i]).innerHTML = shiftAdditBack[1][i];
+    else document.querySelector(".IntlBackslash").innerHTML = "]";
+    document.querySelector(".Slash").innerHTML = "/";
+}
+
+function shiftChange(s) {
+    changeCase();
+    for (let i = 0; i < r.length; i++)
+        if (!language)
+            r[i].innerHTML = shiftAdditEng[1][i];
+        else r[i].innerHTML = shiftAdditRu[1][i];
+    if (!language)
+        for (let i = 0; i < shiftAdditBack[1].length; i++)
+            document.querySelector(shiftAdditBack[3][i]).innerHTML = shiftAdditBack[2][i];
+    else document.querySelector(".IntlBackslash").innerHTML = "[";
+    document.querySelector(".Slash").innerHTML = "?";
+    let button = document.getElementsByClassName("button");
+    for (let i = 0; i < button.length; i++) {
+        button[i].addEventListener('click', () => {
+            if (shiftCount) {
+                shiftCount = false;
+                s.classList.remove("active");
+                shiftChangeBack();
+            }
+        });
     }
 }

@@ -52,12 +52,18 @@ p {
   padding: 0;
 }
 
+.button:hover,
+.buttonservice:hover,
+.active{
+  background-color: white;
+}
+
 .Backspace, 
 .Enter{
-    width: auto;
-    padding: 0px 5px;
-  }
+  width: auto;
+  padding: 0px 5px;
+}
   
 .Enter {
-    height: 80px;
+  height: 80px;
 }
