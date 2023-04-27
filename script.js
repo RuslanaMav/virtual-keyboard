@@ -59,7 +59,6 @@ const k = document.getElementsByClassName("key-row");
 let backKey = createKey("Backspace", "buttonservice Backspace");
 k[0].appendChild(backKey);
 backKey.addEventListener('click', () => {
-    textArea.focus();
     let s = textArea.value;
     let position = getPosInRow(textArea);
     if (position !== 0) textArea.value = s.slice(0, position - 1) + s.slice(position);
@@ -71,7 +70,6 @@ backKey.addEventListener('click', () => {
 let tabKey = createKey("Tab", "buttonservice Tab");
 k[1].prepend(tabKey);
 tabKey.addEventListener('click', () => {
-    textArea.focus();
     let s = textArea.value;
     let position = getPosInRow(textArea);
     if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += "    ";
@@ -84,7 +82,6 @@ let enterKey = createKey("Enter", "buttonservice Enter");
 k[1].appendChild(enterKey);
 k[2].style.marginRight = "10%";
 enterKey.addEventListener('click', () => {
-    textArea.focus();
     let s = textArea.value;
     let position = getPosInRow(textArea);
     if (getPosInRow(textArea) === s.length) textArea.value += "\n";
@@ -98,11 +95,9 @@ let count = false;
 let capsKey = createKey("CapsLock", "buttonservice CapsLock");
 k[2].prepend(capsKey);
 capsKey.addEventListener('click', () => {
-    textArea.focus();
     document.querySelector(".CapsLock").classList.toggle("active");
     changeCase();
 });
-
 
 //Shift 
 const shiftAdditEng = {
@@ -154,7 +149,38 @@ keyRow4.appendChild(controlKey);
 let altKey = createKey("Option", "buttonservice AltLeft");
 keyRow4.appendChild(altKey);
 
+//Space
+let spaceKey = createKey(" ", "buttonservice Space");
+keyRow4.appendChild(spaceKey);
+spaceKey.addEventListener('click', () => {
+    let s = textArea.value;
+    let position = getPosInRow(textArea);
+    if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += " ";
+    else textArea.value = s.slice(0, position) + " " + s.slice(position);
+    textArea.setSelectionRange(position + 1, position + 1);
+});
+
+let alt1Key = createKey("Option", "buttonservice AltRight");
+keyRow4.appendChild(alt1Key);
+
+let leftKey = createKey("&#9668;", "buttonservice ArrowLeft");
+k[4].appendChild(leftKey);
+createActive(leftKey);
+
+let downKey = createKey("&#9660;", "buttonservice ArrowDown");
+k[4].appendChild(downKey);
+createActive(downKey);
+
+let rightKey = createKey("&#9658;", "buttonservice ArrowRight");
+k[4].appendChild(rightKey);
+createActive(rightKey);
+
 const button = document.querySelectorAll("button");
+
+for (let i of button)
+    i.addEventListener("click", () => textArea.focus());
+
+//Change language
 let array = [];
 for (let i of button) {
     i.addEventListener("click", () => {
@@ -166,12 +192,21 @@ for (let i of button) {
                 if (language) language = false;
                 else language = true;
                 changeLanguage();
+                if (shift1Key.classList.contains('active') || shiftKey.classList.contains('active')) {
+                    shiftChangeBack();
+                    shift1Key.classList.remove("active");
+                    shiftKey.classList.remove("active");
+                    shiftCount = false;
+                }
+                if (capsKey.classList.contains('active')){
+                    count = false;
+                    changeCase();
+                }
             }
             array.length = 0;
         }
     })
 }
-
 
 function createKey(value, cl) {
     let key = document.createElement("button");
@@ -186,7 +221,6 @@ function createActive(obj) {
         let position = getPosInRow(textArea);
         if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += obj.innerText;
         else textArea.value = s.slice(0, position) + obj.innerText + s.slice(position);
-        textArea.focus();
         textArea.setSelectionRange(position + 1, position + 1);
     });
 }
@@ -225,7 +259,6 @@ function changeCase() {
 }
 
 function shiftActive(s) {
-    textArea.focus();
     if (!shiftCount) {
         if (s === 0) shiftKey.classList.add("active");
         else shift1Key.classList.add("active");
