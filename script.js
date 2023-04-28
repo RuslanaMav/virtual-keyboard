@@ -1,4 +1,33 @@
-let language = false;
+let language;
+if (localStorage.getItem('lan') === null) language = false;
+else {
+    if (localStorage.getItem('lan') === "true") language = true;
+    else language = false;
+}
+function setLocalStorage() {
+    localStorage.setItem('lan', language);
+}
+window.addEventListener('beforeunload', setLocalStorage);
+
+document.addEventListener('keydown', function (event) {
+    document.querySelector("." + event.code).classList.toggle("active");
+    textArea.focus();
+    if (event.code === "CapsLock") changeCase();
+    if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+        shiftCount = true;
+        shiftChange();
+    }
+});
+
+document.addEventListener('keyup', function (event) {
+    document.querySelector("." + event.code).classList.toggle("active");
+    textArea.focus();
+    if (event.code === "CapsLock") changeCase();
+    if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+        shiftCount = false;
+        shiftChangeBack();
+    }
+});
 
 let divMain = document.createElement("div");
 divMain.className = "content";
@@ -39,7 +68,6 @@ const nameKey = {
     3: ["IntlBackslash", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash"]
 }
 
-//main 
 for (let i = 0; i < 4; i++) {
     let keyRow = document.createElement("div");
     keyRow.className = "key-row";
@@ -55,7 +83,6 @@ for (let i = 0; i < 4; i++) {
 
 const k = document.getElementsByClassName("key-row");
 
-//Backspace 
 let backKey = createKey("Backspace", "buttonservice Backspace");
 k[0].appendChild(backKey);
 backKey.addEventListener('click', () => {
@@ -66,7 +93,6 @@ backKey.addEventListener('click', () => {
     textArea.setSelectionRange(position - 1, position - 1);
 });
 
-//Tab
 let tabKey = createKey("Tab", "buttonservice Tab");
 k[1].prepend(tabKey);
 tabKey.addEventListener('click', () => {
@@ -77,7 +103,6 @@ tabKey.addEventListener('click', () => {
     textArea.setSelectionRange(position + 4, position + 4);
 });
 
-//Enter
 let enterKey = createKey("Enter", "buttonservice Enter");
 k[1].appendChild(enterKey);
 k[2].style.marginRight = "10%";
@@ -90,7 +115,6 @@ enterKey.addEventListener('click', () => {
     textArea.setSelectionRange(position + 1, position + 1);
 });
 
-//CapsLock
 let count = false;
 let capsKey = createKey("CapsLock", "buttonservice CapsLock");
 k[2].prepend(capsKey);
@@ -99,7 +123,6 @@ capsKey.addEventListener('click', () => {
     changeCase();
 });
 
-//Shift 
 const shiftAdditEng = {
     1: ["±", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+"],
     2: ["&sect;", 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "-", "="]
@@ -141,15 +164,12 @@ let keyRow4 = document.createElement("div");
 keyRow4.className = "key-row";
 divKey.appendChild(keyRow4);
 
-//Control 
 let controlKey = createKey("Control", "buttonservice ControlLeft");
 keyRow4.appendChild(controlKey);
 
-//Alt 
 let altKey = createKey("Option", "buttonservice AltLeft");
 keyRow4.appendChild(altKey);
 
-//Space
 let spaceKey = createKey(" ", "buttonservice Space");
 keyRow4.appendChild(spaceKey);
 spaceKey.addEventListener('click', () => {
@@ -176,11 +196,9 @@ k[4].appendChild(rightKey);
 createActive(rightKey);
 
 const button = document.querySelectorAll("button");
-
 for (let i of button)
     i.addEventListener("click", () => textArea.focus());
 
-//Change language
 let array = [];
 for (let i of button) {
     i.addEventListener("click", () => {
