@@ -65,15 +65,17 @@ p {
 .ControlLeft, 
 .AltLeft, 
 .AltRight, 
-.ShiftRight {
+.ShiftRight, 
+.MetaLeft, 
+.MetaRight {
   width: auto;
   padding: 0px 5px;
 }
   
 .Enter {
-  height: 75px;
+  height: 70px;
 }
 
 .Space {
-  width: 40%;
+  width: 20%;
 }

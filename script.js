@@ -163,12 +163,17 @@ shift1Key.addEventListener('click', () => {
 let keyRow4 = document.createElement("div");
 keyRow4.className = "key-row";
 divKey.appendChild(keyRow4);
+keyRow4.style.paddingRight = "7px";
 
 let controlKey = createKey("Control", "buttonservice ControlLeft");
 keyRow4.appendChild(controlKey);
 
 let altKey = createKey("Option", "buttonservice AltLeft");
 keyRow4.appendChild(altKey);
+
+let metaKey = createKey("Command", "buttonservice MetaLeft");
+keyRow4.appendChild(metaKey);
+
 
 let spaceKey = createKey(" ", "buttonservice Space");
 keyRow4.appendChild(spaceKey);
@@ -179,6 +184,9 @@ spaceKey.addEventListener('click', () => {
     else textArea.value = s.slice(0, position) + " " + s.slice(position);
     textArea.setSelectionRange(position + 1, position + 1);
 });
+
+let meta1Key = createKey("Command", "buttonservice MetaRight");
+keyRow4.appendChild(meta1Key);
 
 let alt1Key = createKey("Option", "buttonservice AltRight");
 keyRow4.appendChild(alt1Key);
