@@ -10,17 +10,19 @@ function setLocalStorage() {
 window.addEventListener('beforeunload', setLocalStorage);
 
 document.addEventListener('keydown', function (event) {
-    document.querySelector("." + event.code).classList.toggle("active");
+    document.querySelector("." + event.code).classList.add("active");
     textArea.focus();
     if (event.code === "CapsLock") changeCase();
     if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
         shiftCount = true;
         shiftChange();
     }
+    if (event.code === "Tab") tabAction();
+    if (event.code === "AltRight") return;
 });
 
 document.addEventListener('keyup', function (event) {
-    document.querySelector("." + event.code).classList.toggle("active");
+    document.querySelector("." + event.code).classList.remove("active");
     textArea.focus();
     if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
         shiftCount = false;
@@ -95,12 +97,16 @@ backKey.addEventListener('click', () => {
 let tabKey = createKey("Tab", "buttonservice Tab");
 k[1].prepend(tabKey);
 tabKey.addEventListener('click', () => {
+    tabAction();
+});
+
+function tabAction () {
     let s = textArea.value;
     let position = getPosInRow(textArea);
     if (s.length === 0 || getPosInRow(textArea) === s.length) textArea.value += "    ";
     else textArea.value = s.slice(0, position) + "    " + s.slice(position);
     textArea.setSelectionRange(position + 4, position + 4);
-});
+}
 
 let enterKey = createKey("Enter", "buttonservice Enter");
 k[1].appendChild(enterKey);
