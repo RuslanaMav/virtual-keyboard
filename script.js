@@ -22,7 +22,6 @@ document.addEventListener('keydown', function (event) {
 document.addEventListener('keyup', function (event) {
     document.querySelector("." + event.code).classList.toggle("active");
     textArea.focus();
-    if (event.code === "CapsLock") changeCase();
     if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
         shiftCount = false;
         shiftChangeBack();
