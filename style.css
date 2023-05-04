@@ -1,0 +1,87 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 50%;
+  height: 100%;
+}
+
+.textArea, 
+.keyboard {
+  height: 200px;
+  margin: 5px;
+}
+
+.textArea {
+  width: 90%;
+  margin: auto;
+  overflow: scroll;
+}
+  
+.keyboard {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 80%;
+  margin: auto;
+  border: solid 2px black;
+  background-color: rgb(128, 121, 121);
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.key-row {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+}
+
+p {
+  margin: auto;
+  margin-top: 10px;
+}
+
+.button, 
+.buttonservice {
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #c7c7c7;
+  padding: 0;
+}
+
+.button:hover,
+.buttonservice:hover,
+.active{
+  background-color: white;
+}
+
+.Backspace, 
+.Enter, 
+.CapsLock, 
+.ShiftLeft, 
+.ControlLeft, 
+.AltLeft, 
+.AltRight, 
+.ShiftRight, 
+.MetaLeft, 
+.MetaRight {
+  width: auto;
+  padding: 0px 5px;
+}
+  
+.Enter {
+  height: 70px;
+}
+
+.Space {
+  width: 20%;
+}
+
+.button:active,
+.buttonservice:active,
+.active{
+  border-radius: 7px;
+}
