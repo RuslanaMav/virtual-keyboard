@@ -79,3 +79,9 @@ p {
 .Space {
   width: 20%;
 }
+
+.button:active,
+.buttonservice:active,
+.active{
+  border-radius: 7px;
+}
